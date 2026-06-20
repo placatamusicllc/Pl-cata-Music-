@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+<title>Portal de Artistas — Plácata Music LLC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --void:#03050A;
+  --deep:#060B14;
+  --ink:#080E1C;
+  --blue:#1246FF;
+  --blue-hi:#3A6BFF;
+  --blue-glow:#5585FF;
+  --ice:#A8C4FF;
+  --white:#EEF3FF;
+  --grey:#5A6A8A;
+  --grey-hi:#8A9DC0;
+  --green:#3DDC97;
+  --red:#FF7A7A;
+  --ff-disp:'Syne',sans-serif;
+  --ff-body:'Inter',sans-serif;
+  --ff-mono:'DM Mono',monospace;
+}
+html{overflow-x:hidden;width:100%}
+body{
+  background:var(--void);
+  color:var(--white);
+  font-family:var(--ff-body);
+  overflow-x:hidden;
+  line-height:1.6;
+  min-height:100vh;
+}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(90px)}
+.orb-1{width:600px;height:600px;top:-200px;right:-150px;background:radial-gradient(circle,rgba(18,70,255,0.14),transparent 70%)}
+.orb-2{width:500px;height:500px;bottom:-150px;left:-150px;background:radial-gradient(circle,rgba(58,107,255,0.1),transparent 70%)}
+
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  width:min(92%,1100px);max-width:calc(100vw - 24px);
+  z-index:1000;display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.5rem;height:58px;
+  background:rgba(8,14,28,0.6);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:18px;
+  box-shadow:0 4px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.nav-logo{font-family:var(--ff-disp);font-weight:800;font-size:1rem;letter-spacing:0.04em;color:var(--white);text-decoration:none;white-space:nowrap}
+.nav-logo em{color:var(--blue-hi);font-style:normal}
+.nav-badge{
+  font-family:var(--ff-mono);font-size:0.65rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--ice);
+  background:rgba(18,70,255,0.12);border:1px solid rgba(18,70,255,0.3);
+  padding:0.4rem 0.9rem;border-radius:100px;
+}
+.nav-logout{
+  font-family:var(--ff-mono);font-size:0.7rem;letter-spacing:0.05em;
+  color:var(--grey-hi);text-decoration:none;cursor:pointer;
+  display:none;align-items:center;gap:0.4rem;
+}
+.nav-logout:hover{color:var(--white)}
+
+/* ═══ MAIN WRAP ═══ */
+.wrap{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:110px 5vw 60px;
+}
+
+/* ═══ GLASS ═══ */
+.glass{
+  background:rgba(255,255,255,0.045);
+  backdrop-filter:blur(24px) saturate(160%);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:22px;
+  box-shadow:0 24px 70px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.08);
+  position:relative;overflow:hidden;
+}
+.glass::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+}
+
+/* ═══ LOGIN SCREEN ═══ */
+#loginScreen{width:100%;max-width:420px}
+.login-card{padding:3rem 2.5rem}
+.login-icon{
+  width:56px;height:56px;border-radius:16px;margin:0 auto 1.5rem;
+  background:linear-gradient(135deg,var(--blue),var(--blue-hi));
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  box-shadow:0 0 30px rgba(18,70,255,0.4);
+}
+.login-title{font-family:var(--ff-disp);font-weight:800;font-size:1.7rem;text-align:center;color:var(--white);margin-bottom:0.5rem}
+.login-sub{font-size:0.85rem;color:var(--grey-hi);text-align:center;margin-bottom:2.2rem;line-height:1.6}
+.login-field{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.3rem}
+.login-field label{font-family:var(--ff-mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey-hi)}
+.login-field input{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;padding:0.95rem 1.1rem;color:var(--white);
+  font-family:var(--ff-mono);font-size:1rem;letter-spacing:0.05em;
+  outline:none;transition:border-color 0.2s;width:100%;
+}
+.login-field input:focus{border-color:var(--blue-hi)}
+.login-btn{
+  width:100%;background:linear-gradient(135deg,var(--blue),var(--blue-hi));
+  color:var(--white);border:none;padding:1rem;border-radius:10px;
+  font-weight:600;font-size:0.92rem;letter-spacing:0.03em;cursor:pointer;
+  box-shadow:0 0 28px rgba(18,70,255,0.4);transition:box-shadow 0.25s,transform 0.2s;
+  font-family:var(--ff-body);margin-top:0.5rem;
+}
+.login-btn:hover{box-shadow:0 0 40px rgba(18,70,255,0.6);transform:translateY(-1px)}
+.login-error{
+  display:none;background:rgba(255,122,122,0.1);border:1px solid rgba(255,122,122,0.3);
+  color:var(--red);font-size:0.82rem;padding:0.8rem 1rem;border-radius:8px;
+  margin-bottom:1.2rem;text-align:center;
+}
+.login-error.show{display:block}
+.login-footer{
+  text-align:center;margin-top:2rem;padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.login-footer p{font-size:0.8rem;color:var(--grey-hi);line-height:1.7}
+.login-footer a{color:var(--ice);text-decoration:none}
+.login-footer a:hover{text-decoration:underline}
+
+/* ═══ DASHBOARD ═══ */
+#dashboardScreen{display:none;width:100%;max-width:780px}
+.dash-header{text-align:center;margin-bottom:2.5rem}
+.dash-welcome{font-family:var(--ff-mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue-hi);margin-bottom:0.8rem}
+.dash-title{font-family:var(--ff-disp);font-weight:800;font-size:2.3rem;color:var(--white)}
+
+.form-card{padding:2.5rem}
+.form-section-title{
+  font-family:var(--ff-disp);font-weight:700;font-size:1.05rem;
+  color:var(--white);margin-bottom:1.2rem;margin-top:2rem;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.form-section-title:first-child{margin-top:0}
+.form-section-title .num{
+  width:24px;height:24px;border-radius:7px;
+  background:rgba(18,70,255,0.15);border:1px solid rgba(18,70,255,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--ff-mono);font-size:0.7rem;color:var(--ice);flex-shrink:0;
+}
+.field-group{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.1rem}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field-group label{
+  font-family:var(--ff-mono);font-size:0.68rem;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--grey-hi);
+  display:flex;align-items:center;gap:0.4rem;
+}
+.field-group label .req{color:var(--blue-hi)}
+.field-group input,.field-group select,.field-group textarea{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  border-radius:9px;padding:0.85rem 1rem;color:var(--white);
+  font-family:var(--ff-body);font-size:0.9rem;outline:none;
+  transition:border-color 0.2s;width:100%;appearance:none;
+}
+.field-group input:focus,.field-group select:focus,.field-group textarea:focus{border-color:var(--blue-hi)}
+.field-group select option{background:var(--ink)}
+.field-group textarea{resize:vertical;min-height:80px}
+.field-hint{font-size:0.72rem;color:var(--grey);margin-top:-0.2rem}
+
+/* feat list */
+.dynamic-list{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:0.8rem}
+.dynamic-row{
+  display:grid;grid-template-columns:1fr 1fr auto;gap:0.6rem;align-items:end;
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+  padding:0.9rem;border-radius:10px;
+}
+.dynamic-row.composer-row{grid-template-columns:1fr 90px auto}
+.remove-btn{
+  width:38px;height:38px;border-radius:8px;flex-shrink:0;
+  background:rgba(255,122,122,0.1);border:1px solid rgba(255,122,122,0.25);
+  color:var(--red);cursor:pointer;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.remove-btn:hover{background:rgba(255,122,122,0.2)}
+.add-btn{
+  background:rgba(18,70,255,0.08);border:1px dashed rgba(18,70,255,0.35);
+  color:var(--ice);padding:0.7rem;border-radius:9px;
+  font-family:var(--ff-mono);font-size:0.78rem;letter-spacing:0.05em;
+  cursor:pointer;width:100%;transition:all 0.2s;
+}
+.add-btn:hover{background:rgba(18,70,255,0.15)}
+
+.pct-warning{
+  font-size:0.75rem;color:var(--grey-hi);margin-top:0.4rem;
+  font-family:var(--ff-mono);
+}
+.pct-warning.ok{color:var(--green)}
+.pct-warning.bad{color:var(--red)}
+
+.drive-box{
+  background:rgba(18,70,255,0.05);border:1px solid rgba(18,70,255,0.2);
+  border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.1rem;
+  font-size:0.78rem;color:var(--grey-hi);line-height:1.7;
+}
+.drive-box strong{color:var(--ice)}
+
+.submit-btn{
+  width:100%;background:linear-gradient(135deg,var(--blue),var(--blue-hi));
+  color:var(--white);border:none;padding:1.1rem;border-radius:10px;
+  font-weight:600;font-size:0.95rem;letter-spacing:0.03em;cursor:pointer;
+  box-shadow:0 0 32px rgba(18,70,255,0.4);transition:box-shadow 0.25s,transform 0.2s;
+  font-family:var(--ff-body);margin-top:1.5rem;
+}
+.submit-btn:hover{box-shadow:0 0 46px rgba(18,70,255,0.6);transform:translateY(-1px)}
+
+.success-screen{display:none;text-align:center;padding:3rem 2.5rem}
+.success-icon{font-size:3rem;margin-bottom:1rem}
+.success-title{font-family:var(--ff-disp);font-weight:800;font-size:1.6rem;color:var(--white);margin-bottom:0.8rem}
+.success-text{font-size:0.88rem;color:var(--grey-hi);line-height:1.7;max-width:420px;margin:0 auto 2rem}
+.success-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);
+  color:var(--white);text-decoration:none;padding:0.85rem 1.8rem;
+  border-radius:100px;font-size:0.85rem;font-weight:500;
+  transition:all 0.2s;
+}
+.success-btn:hover{background:rgba(255,255,255,0.1)}
+
+@media(max-width:640px){
+  nav{top:10px;padding:0 1rem;height:52px}
+  .nav-logo{font-size:0.78rem}
+  .nav-badge{display:none}
+  .wrap{padding:80px 5vw 40px}
+  .login-card{padding:2.2rem 1.6rem}
+  .login-title{font-size:1.4rem}
+  .form-card{padding:1.6rem}
+  .dash-title{font-size:1.7rem}
+  .field-row{grid-template-columns:1fr}
+  .dynamic-row{grid-template-columns:1fr;gap:0.8rem}
+  .dynamic-row.composer-row{grid-template-columns:1fr}
+  .remove-btn{width:100%;height:36px}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="placata-music.html" class="nav-logo">PLÁCATA MUSIC<em> LLC</em></a>
+  <span class="nav-badge">Portal de Artistas</span>
+  <a class="nav-logout" id="logoutBtn" onclick="logout()">Cerrar sesión ⏻</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- ═══ LOGIN SCREEN ═══ -->
+  <div id="loginScreen">
+    <div class="glass login-card">
+      <div class="login-icon">🔐</div>
+      <div class="login-title">Acceso de Artistas</div>
+      <p class="login-sub">Ingresa tu usuario y contraseña para enviar tu próximo lanzamiento a Plácata Music.</p>
+
+      <div class="login-error" id="loginError">Código inválido. Verifica con tu manager de Plácata Music.</div>
+
+      <div class="login-field">
+        <label>Usuario</label>
+        <input type="text" id="accessCode" placeholder="tu.usuario" autocomplete="off"/>
+      </div>
+      <div class="login-field">
+        <label>Contraseña</label>
+        <input type="password" id="accessPassword" placeholder="••••••••" autocomplete="off"/>
+      </div>
+      <button class="login-btn" id="loginBtn" onclick="tryLogin()">Entrar al portal</button>
+
+      <div class="login-footer">
+        <p>¿No tienes usuario y contraseña?<br/><a href="mailto:placatamusicllc@gmail.com?subject=Solicitud%20de%20subcuenta%20-%20Pl%C3%A1cata%20Music">Solicítalo aquí</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DASHBOARD / FORM SCREEN ═══ -->
+  <div id="dashboardScreen">
+    <div class="dash-header">
+      <div class="dash-welcome" id="welcomeArtist">Bienvenido, Artista</div>
+      <h1 class="dash-title">Nuevo Lanzamiento</h1>
+    </div>
+
+    <form class="glass form-card" id="releaseForm" onsubmit="submitRelease(event)">
+
+      <div class="form-section-title"><span class="num">1</span> Información de la pista</div>
+      <div class="field-group">
+        <label>Título de la canción <span class="req">*</span></label>
+        <input type="text" id="trackTitle" required placeholder="Ej: Mi Nuevo Sencillo"/>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Artista principal <span class="req">*</span></label>
+          <input type="text" id="mainArtist" required placeholder="Tu nombre artístico"/>
+        </div>
+        <div class="field-group">
+          <label>Link de Spotify (opcional)</label>
+          <input type="url" id="mainArtistSpotify" placeholder="open.spotify.com/artist/..."/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Link de Apple Music del artista (opcional)</label>
+        <input type="url" id="mainArtistApple" placeholder="music.apple.com/artist/..."/>
+      </div>
+
+      <div class="form-section-title"><span class="num">2</span> Artistas invitados (feat.)</div>
+      <div class="dynamic-list" id="featList"></div>
+      <button type="button" class="add-btn" onclick="addFeat()">+ Agregar artista feat.</button>
+
+      <div class="form-section-title"><span class="num">3</span> Productor(es)</div>
+      <div class="dynamic-list" id="producerList"></div>
+      <button type="button" class="add-btn" onclick="addProducer()">+ Agregar productor</button>
+
+      <div class="form-section-title"><span class="num">4</span> Compositores y splits</div>
+      <div class="dynamic-list" id="composerList"></div>
+      <button type="button" class="add-btn" onclick="addComposer()">+ Agregar compositor</button>
+      <div class="pct-warning" id="pctWarning">Total: 0% — debe sumar 100%</div>
+
+      <div class="form-section-title"><span class="num">5</span> Detalles del lanzamiento</div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Sello <span class="req">*</span></label>
+          <input type="text" id="label" required value="Plácata Music LLC"/>
+        </div>
+        <div class="field-group">
+          <label>Idioma <span class="req">*</span></label>
+          <select id="language" required>
+            <option value="">Selecciona...</option>
+            <option>Español</option>
+            <option>Inglés</option>
+            <option>Instrumental</option>
+            <option>Otro</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Fecha de grabación <span class="req">*</span></label>
+          <input type="date" id="recordDate" required/>
+        </div>
+        <div class="field-group">
+          <label>© Copyright (línea C) <span class="req">*</span></label>
+          <input type="text" id="copyright" required placeholder="© 2026 Plácata Music LLC"/>
+        </div>
+      </div>
+
+      <div class="form-section-title"><span class="num">6</span> Archivos</div>
+      <div class="drive-box">
+        📁 <strong>Importante:</strong> sube tu archivo de audio en formato WAV y tu portada en 3000x3000px a tu Google Drive o WeTransfer, asegúrate que el link tenga acceso público o "cualquiera con el link", y pégalo abajo.
+      </div>
+      <div class="field-group">
+        <label>Link del archivo WAV <span class="req">*</span></label>
+        <input type="url" id="wavLink" required placeholder="https://drive.google.com/..."/>
+      </div>
+      <div class="field-group">
+        <label>Link de la portada (3000x3000px) <span class="req">*</span></label>
+        <input type="url" id="artworkLink" required placeholder="https://drive.google.com/..."/>
+      </div>
+
+      <div class="form-section-title"><span class="num">7</span> Fecha de estreno</div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Fecha de lanzamiento deseada <span class="req">*</span></label>
+          <input type="date" id="releaseDate" required/>
+        </div>
+        <div class="field-group">
+          <label>Hora de estreno <span class="req">*</span></label>
+          <input type="time" id="releaseTime" required value="00:00"/>
+        </div>
+      </div>
+      <div class="field-hint">Recomendamos fecha de estreno con al menos 3-4 semanas de anticipación para pitching a playlists.</div>
+
+      <div class="field-group" style="margin-top:1.5rem">
+        <label>Notas adicionales (opcional)</label>
+        <textarea id="notes" placeholder="Cualquier detalle extra que debamos saber..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Enviar lanzamiento a Plácata Music →</button>
+    </form>
+
+    <!-- SUCCESS STATE -->
+    <div class="glass success-screen" id="successScreen">
+      <div class="success-icon">✅</div>
+      <div class="success-title">¡Lanzamiento recibido!</div>
+      <p class="success-text">Hemos recibido la información de tu lanzamiento. Nuestro equipo lo revisará y programará la distribución manualmente. Te contactaremos si falta algún dato.</p>
+      <a href="mailto:placatamusicllc@gmail.com" class="success-btn">Contactar al equipo ✉️</a>
+      <br/><br/>
+      <button class="add-btn" style="max-width:280px;margin:0 auto" onclick="resetForm()">Enviar otro lanzamiento</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════ SUPABASE CONNECTION ══════════
+const SUPABASE_URL = 'https://opsnbzhashbpabngvqzn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_3MUFHEwVxzFyn5TO1hpONA_zNiUk8Me';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let featCount = 0;
+let producerCount = 0;
+let composerCount = 0;
+
+async function tryLogin(){
+  const username = document.getElementById('accessCode').value.trim();
+  const password = document.getElementById('accessPassword').value.trim();
+  const errorBox = document.getElementById('loginError');
+  const loginBtn = document.getElementById('loginBtn');
+
+  if(!username || !password){
+    errorBox.textContent = 'Completa usuario y contraseña.';
+    errorBox.classList.add('show');
+    return;
+  }
+
+  loginBtn.textContent = 'Verificando...';
+  loginBtn.disabled = true;
+
+  try {
+    const { data, error } = await sb
+      .from('artists')
+      .select('id, username, artist_name, password')
+      .eq('username', username)
+      .single();
+
+    if(error || !data || data.password !== password){
+      errorBox.textContent = 'Usuario o contraseña incorrectos. Verifica con tu manager de Plácata Music.';
+      errorBox.classList.add('show');
+      loginBtn.textContent = 'Entrar al portal';
+      loginBtn.disabled = false;
+      return;
+    }
+
+    sessionStorage.setItem('placata_artist_id', data.id);
+    sessionStorage.setItem('placata_artist', data.artist_name);
+    sessionStorage.setItem('placata_username', data.username);
+    showDashboard(data.artist_name);
+    errorBox.classList.remove('show');
+  } catch(err){
+    errorBox.textContent = 'Error de conexión. Intenta de nuevo en unos segundos.';
+    errorBox.classList.add('show');
+  }
+
+  loginBtn.textContent = 'Entrar al portal';
+  loginBtn.disabled = false;
+}
+
+function showDashboard(artistName){
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboardScreen').style.display = 'block';
+  document.getElementById('logoutBtn').style.display = 'flex';
+  document.getElementById('welcomeArtist').textContent = 'Bienvenido, ' + artistName;
+  document.getElementById('mainArtist').value = artistName;
+}
+
+function logout(){
+  sessionStorage.removeItem('placata_artist_id');
+  sessionStorage.removeItem('placata_artist');
+  sessionStorage.removeItem('placata_username');
+  document.getElementById('dashboardScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'block';
+  document.getElementById('logoutBtn').style.display = 'none';
+  document.getElementById('accessCode').value = '';
+  document.getElementById('accessPassword').value = '';
+}
+
+// Check existing session on load
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem('placata_artist');
+  if(saved){ showDashboard(saved); }
+  addFeat();
+  addProducer();
+  addComposer();
+  addComposer();
+  pingDatabase();
+});
+
+// Allow Enter key on login
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none'){
+    tryLogin();
+  }
+});
+
+// ══════════ KEEP-ALIVE PING ══════════
+// Hace una consulta mínima a la base de datos cada vez que alguien visita el portal,
+// para mantener el proyecto Supabase activo y evitar que se pause por inactividad.
+async function pingDatabase(){
+  try {
+    await sb.from('artists').select('id').limit(1);
+    console.log('Ping a Supabase exitoso — proyecto activo');
+  } catch(e){
+    console.log('Ping falló, pero no afecta el uso normal del portal');
+  }
+}
+
+// ══════════ DYNAMIC FEAT ARTISTS ══════════
+function addFeat(){
+  featCount++;
+  const id = 'feat'+featCount;
+  const row = document.createElement('div');
+  row.className = 'dynamic-row';
+  row.id = 'row-'+id;
+  row.innerHTML = `
+    <div class="field-group" style="margin-bottom:0">
+      <label>Nombre del artista</label>
+      <input type="text" placeholder="Nombre feat." id="${id}-name"/>
+    </div>
+    <div class="field-group" style="margin-bottom:0">
+      <label>Link Spotify/Apple</label>
+      <input type="url" placeholder="Link de perfil" id="${id}-link"/>
+    </div>
+    <button type="button" class="remove-btn" onclick="document.getElementById('row-${id}').remove()">✕</button>
+  `;
+  document.getElementById('featList').appendChild(row);
+}
+
+// ══════════ DYNAMIC PRODUCERS ══════════
+function addProducer(){
+  producerCount++;
+  const id = 'prod'+producerCount;
+  const row = document.createElement('div');
+  row.className = 'dynamic-row';
+  row.id = 'row-'+id;
+  row.innerHTML = `
+    <div class="field-group" style="margin-bottom:0">
+      <label>Nombre del productor</label>
+      <input type="text" placeholder="Nombre del productor" id="${id}-name"/>
+    </div>
+    <div class="field-group" style="margin-bottom:0">
+      <label>Link Spotify/Apple</label>
+      <input type="url" placeholder="Link de perfil" id="${id}-link"/>
+    </div>
+    <button type="button" class="remove-btn" onclick="document.getElementById('row-${id}').remove()">✕</button>
+  `;
+  document.getElementById('producerList').appendChild(row);
+}
+
+// ══════════ DYNAMIC COMPOSERS WITH % ══════════
+function addComposer(){
+  composerCount++;
+  const id = 'comp'+composerCount;
+  const row = document.createElement('div');
+  row.className = 'dynamic-row composer-row';
+  row.id = 'row-'+id;
+  row.innerHTML = `
+    <div class="field-group" style="margin-bottom:0">
+      <label>Nombre del compositor</label>
+      <input type="text" placeholder="Nombre completo" id="${id}-name"/>
+    </div>
+    <div class="field-group" style="margin-bottom:0">
+      <label>%</label>
+      <input type="number" min="0" max="100" placeholder="0" id="${id}-pct" oninput="checkPercentages()"/>
+    </div>
+    <button type="button" class="remove-btn" onclick="document.getElementById('row-${id}').remove(); checkPercentages()">✕</button>
+  `;
+  document.getElementById('composerList').appendChild(row);
+  checkPercentages();
+}
+
+function checkPercentages(){
+  const inputs = document.querySelectorAll('[id^="comp"][id$="-pct"]');
+  let total = 0;
+  inputs.forEach(i => total += (parseFloat(i.value) || 0));
+  const warning = document.getElementById('pctWarning');
+  warning.textContent = `Total: ${total}% — ${total === 100 ? 'correcto ✓' : 'debe sumar 100%'}`;
+  warning.className = 'pct-warning ' + (total === 100 ? 'ok' : (total > 0 ? 'bad' : ''));
+}
+
+// ══════════ FORM SUBMIT ══════════
+async function submitRelease(e){
+  e.preventDefault();
+
+  const submitBtn = e.target.querySelector('.submit-btn');
+  submitBtn.textContent = 'Enviando...';
+  submitBtn.disabled = true;
+
+  // gather feat artists
+  const feats = [];
+  document.querySelectorAll('[id^="row-feat"]').forEach(row=>{
+    const id = row.id.replace('row-','');
+    const name = document.getElementById(id+'-name')?.value;
+    const link = document.getElementById(id+'-link')?.value;
+    if(name) feats.push(`${name}${link ? ' ('+link+')' : ''}`);
+  });
+
+  // gather producers
+  const producers = [];
+  document.querySelectorAll('[id^="row-prod"]').forEach(row=>{
+    const id = row.id.replace('row-','');
+    const name = document.getElementById(id+'-name')?.value;
+    const link = document.getElementById(id+'-link')?.value;
+    if(name) producers.push(`${name}${link ? ' ('+link+')' : ''}`);
+  });
+
+  // gather composers
+  const composers = [];
+  document.querySelectorAll('[id^="row-comp"]').forEach(row=>{
+    const id = row.id.replace('row-','');
+    const name = document.getElementById(id+'-name')?.value;
+    const pct = document.getElementById(id+'-pct')?.value;
+    if(name) composers.push(`${name} (${pct || 0}%)`);
+  });
+
+  const data = {
+    artist_id: sessionStorage.getItem('placata_artist_id') || null,
+    artist_username: sessionStorage.getItem('placata_username') || 'desconocido',
+    track_title: document.getElementById('trackTitle').value,
+    main_artist: document.getElementById('mainArtist').value,
+    main_artist_spotify: document.getElementById('mainArtistSpotify').value,
+    main_artist_apple: document.getElementById('mainArtistApple').value,
+    feats: feats.join('; ') || 'Ninguno',
+    producers: producers.join('; ') || 'No especificado',
+    composers: composers.join('; ') || 'No especificado',
+    label: document.getElementById('label').value,
+    language: document.getElementById('language').value,
+    record_date: document.getElementById('recordDate').value || null,
+    copyright: document.getElementById('copyright').value,
+    wav_link: document.getElementById('wavLink').value,
+    artwork_link: document.getElementById('artworkLink').value,
+    release_date: document.getElementById('releaseDate').value || null,
+    release_time: document.getElementById('releaseTime').value || null,
+    notes: document.getElementById('notes').value || 'Ninguna'
+  };
+
+  // 1. Guardar en Supabase
+  try {
+    const { error } = await sb.from('releases').insert([data]);
+    if(error) console.error('Error guardando en base de datos:', error);
+  } catch(err){
+    console.error('Error de conexión al guardar:', err);
+  }
+
+  // 2. Enviar correo de respaldo con todos los datos
+  const subject = `Nuevo Lanzamiento: "${data.track_title}" — ${data.main_artist}`;
+  const body = `NUEVO LANZAMIENTO — PORTAL DE ARTISTAS PLÁCATA MUSIC
+═══════════════════════════════════════
+
+ARTISTA (sesión): ${sessionStorage.getItem('placata_artist') || 'N/A'}
+
+1. INFORMACIÓN DE LA PISTA
+Título: ${data.track_title}
+Artista principal: ${data.main_artist}
+Spotify artista: ${data.main_artist_spotify || 'N/A'}
+Apple Music artista: ${data.main_artist_apple || 'N/A'}
+
+2. ARTISTAS FEAT.
+${data.feats}
+
+3. PRODUCTOR(ES)
+${data.producers}
+
+4. COMPOSITORES Y SPLITS
+${data.composers}
+
+5. DETALLES DEL LANZAMIENTO
+Sello: ${data.label}
+Idioma: ${data.language}
+Fecha de grabación: ${data.record_date}
+Copyright: ${data.copyright}
+
+6. ARCHIVOS
+WAV: ${data.wav_link}
+Portada: ${data.artwork_link}
+
+7. ESTRENO
+Fecha: ${data.release_date}
+Hora: ${data.release_time}
+
+NOTAS ADICIONALES
+${data.notes}
+═══════════════════════════════════════
+(Este lanzamiento también quedó guardado automáticamente en el sistema de Plácata Music)`;
+
+  const mailtoLink = `mailto:placatamusicllc@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailtoLink;
+
+  // Show success screen
+  document.getElementById('releaseForm').style.display = 'none';
+  document.getElementById('successScreen').style.display = 'block';
+  submitBtn.textContent = 'Enviar lanzamiento a Plácata Music →';
+  submitBtn.disabled = false;
+}
+
+function resetForm(){
+  document.getElementById('releaseForm').reset();
+  document.getElementById('releaseForm').style.display = 'block';
+  document.getElementById('successScreen').style.display = 'none';
+  document.getElementById('featList').innerHTML = '';
+  document.getElementById('producerList').innerHTML = '';
+  document.getElementById('composerList').innerHTML = '';
+  featCount = 0; producerCount = 0; composerCount = 0;
+  addFeat(); addProducer(); addComposer(); addComposer();
+  const artist = sessionStorage.getItem('placata_artist');
+  if(artist) document.getElementById('mainArtist').value = artist;
+}
+</script>
+</body>
+</html>
