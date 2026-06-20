@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+<title>Plácata Music LLC — Private Music Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --void:#03050A;
+  --deep:#060B14;
+  --ink:#080E1C;
+  --blue:#1246FF;
+  --blue-hi:#3A6BFF;
+  --blue-glow:#5585FF;
+  --ice:#A8C4FF;
+  --white:#EEF3FF;
+  --grey:#5A6A8A;
+  --grey-hi:#8A9DC0;
+  --glass-bg:rgba(255,255,255,0.045);
+  --glass-border:rgba(255,255,255,0.1);
+  --glass-shadow:0 8px 32px rgba(0,0,0,0.4);
+  --ff-disp:'Syne',sans-serif;
+  --ff-body:'Inter',sans-serif;
+  --ff-mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+body{
+  background:var(--void);
+  color:var(--white);
+  font-family:var(--ff-body);
+  overflow-x:hidden;
+  line-height:1.6;
+}
+
+/* ═══ CANVAS BG ═══ */
+#bg-canvas{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+}
+
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  width:min(92%,1100px);
+  max-width:calc(100vw - 24px);
+  z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.5rem;height:58px;
+  background:rgba(8,14,28,0.55);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:18px;
+  box-shadow:0 4px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.nav-logo{
+  font-family:var(--ff-disp);font-weight:800;font-size:1rem;
+  letter-spacing:0.04em;color:var(--white);text-decoration:none;
+  white-space:nowrap;
+}
+.nav-logo em{color:var(--blue-hi);font-style:normal}
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center}
+.nav-links a{
+  text-decoration:none;color:var(--grey-hi);font-size:0.8rem;
+  font-weight:500;letter-spacing:0.05em;text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-pill{
+  background:linear-gradient(135deg,var(--blue),var(--blue-hi));
+  color:var(--white)!important;padding:0.45rem 1.1rem;
+  border-radius:100px;font-size:0.75rem!important;
+  box-shadow:0 0 20px rgba(18,70,255,0.4);
+  transition:box-shadow 0.3s,transform 0.2s!important;
+}
+.nav-pill:hover{box-shadow:0 0 30px rgba(18,70,255,0.6)!important;transform:translateY(-1px)!important}
+.nav-hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all 0.3s}
+
+/* ═══ HERO ═══ */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:100px 5vw 60px;position:relative;z-index:1;
+}
+.hero-content{max-width:820px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  background:rgba(18,70,255,0.12);
+  border:1px solid rgba(18,70,255,0.3);
+  border-radius:100px;padding:0.45rem 1.2rem;
+  font-family:var(--ff-mono);font-size:0.68rem;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--ice);
+  margin-bottom:2.5rem;
+  backdrop-filter:blur(10px);
+}
+.hero-badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--blue-hi);
+  box-shadow:0 0 8px var(--blue-hi);
+  animation:pulse-dot 2s infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.hero-headline{
+  font-family:var(--ff-disp);font-weight:800;
+  font-size:clamp(2.6rem,9vw,8.5rem);
+  line-height:0.92;letter-spacing:-0.02em;
+  margin-bottom:2rem;
+  word-break:break-word;
+}
+.hero-headline .line1{display:block;color:var(--white)}
+.hero-headline .line2{
+  display:block;
+  background:linear-gradient(90deg,var(--blue-hi),var(--ice),var(--blue-hi));
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmer 4s linear infinite;
+}
+.hero-headline .line3{
+  display:block;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.2);
+}
+@keyframes shimmer{to{background-position:200% center}}
+.hero-sub{
+  font-size:1.05rem;color:var(--grey-hi);max-width:500px;
+  margin:0 auto 3rem;line-height:1.8;font-weight:300;
+}
+.hero-sub strong{color:var(--white);font-weight:500}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  background:linear-gradient(135deg,var(--blue),var(--blue-hi));
+  color:var(--white);text-decoration:none;
+  padding:1rem 2.5rem;border-radius:100px;
+  font-weight:600;font-size:0.95rem;letter-spacing:0.04em;
+  box-shadow:0 0 40px rgba(18,70,255,0.5),0 0 80px rgba(18,70,255,0.2);
+  transition:box-shadow 0.3s,transform 0.2s;
+  position:relative;overflow:hidden;
+}
+.hero-cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+  border-radius:inherit;
+}
+.hero-cta:hover{box-shadow:0 0 60px rgba(18,70,255,0.7),0 0 100px rgba(18,70,255,0.3);transform:translateY(-2px)}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  font-family:var(--ff-mono);font-size:0.62rem;letter-spacing:0.2em;
+  color:var(--grey);text-transform:uppercase;
+}
+.scroll-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,var(--grey),transparent);
+  animation:scroll-drop 2s ease-in-out infinite;
+}
+@keyframes scroll-drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ═══ TICKER ═══ */
+.ticker{
+  position:relative;z-index:1;
+  padding:1rem 0;overflow:hidden;
+  background:linear-gradient(90deg,transparent,rgba(18,70,255,0.08) 20%,rgba(18,70,255,0.08) 80%,transparent);
+  border-top:1px solid rgba(18,70,255,0.15);
+  border-bottom:1px solid rgba(18,70,255,0.15);
+}
+.ticker-track{display:flex;width:max-content;animation:ticker 40s linear infinite}
+.ticker-item{
+  font-family:var(--ff-mono);font-size:0.7rem;letter-spacing:0.18em;
+  text-transform:uppercase;color:rgba(168,196,255,0.5);
+  padding:0 2.5rem;white-space:nowrap;
+}
+.ticker-item b{color:rgba(168,196,255,0.9);font-weight:400}
+.ticker-dot{color:var(--blue-hi);margin:0 0.5rem}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ═══ GLASS CARD MIXIN ═══ */
+.glass{
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  box-shadow:var(--glass-shadow),inset 0 1px 0 rgba(255,255,255,0.08);
+  position:relative;overflow:hidden;
+}
+.glass::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  border-radius:inherit;
+}
+
+/* ═══ SECTIONS ═══ */
+.section{padding:110px 5vw;position:relative;z-index:1}
+.section-eyebrow{
+  font-family:var(--ff-mono);font-size:0.68rem;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--blue-hi);margin-bottom:1rem;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.section-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--blue-hi)}
+.section-title{
+  font-family:var(--ff-disp);font-weight:800;
+  font-size:clamp(2.4rem,4.5vw,4rem);
+  line-height:0.95;letter-spacing:-0.01em;
+  color:var(--white);margin-bottom:1.2rem;
+}
+.section-body{font-size:1rem;color:var(--grey-hi);line-height:1.8;font-weight:300;max-width:520px}
+
+/* ═══ SERVICES ═══ */
+.services-layout{
+  display:grid;grid-template-columns:1fr 1.6fr;
+  gap:5rem;align-items:center;
+}
+.services-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;
+}
+.svc-card{
+  padding:1.8rem;border-radius:16px;cursor:default;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  backdrop-filter:blur(16px);
+  transition:background 0.35s,border-color 0.35s,transform 0.25s,box-shadow 0.35s;
+  position:relative;overflow:hidden;
+}
+.svc-card::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at 50% 0%,rgba(18,70,255,0.12),transparent 70%);
+  opacity:0;transition:opacity 0.35s;
+}
+.svc-card:hover{
+  background:rgba(18,70,255,0.08);
+  border-color:rgba(18,70,255,0.3);
+  transform:translateY(-4px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.4),0 0 0 1px rgba(18,70,255,0.2);
+}
+.svc-card:hover::after{opacity:1}
+.svc-icon{
+  font-size:1.6rem;margin-bottom:1rem;display:block;
+  filter:drop-shadow(0 0 8px rgba(18,70,255,0.5));
+}
+.svc-name{
+  font-family:var(--ff-disp);font-weight:700;font-size:1.05rem;
+  letter-spacing:0.03em;color:var(--white);margin-bottom:0.5rem;
+}
+.svc-desc{font-size:0.8rem;color:var(--grey-hi);line-height:1.65}
+.svc-card.wide{grid-column:span 2}
+
+/* ═══ PLATFORMS ═══ */
+.platforms-section{
+  background:linear-gradient(180deg,transparent,rgba(18,70,255,0.04),transparent);
+}
+.platforms-header{text-align:center;margin-bottom:4rem}
+.platforms-header .section-eyebrow{justify-content:center}
+.platforms-header .section-eyebrow::before{display:none}
+.plat-grid{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:0.65rem;max-width:900px;margin:0 auto;
+}
+.plat-chip{
+  font-family:var(--ff-mono);font-size:0.72rem;letter-spacing:0.08em;
+  padding:0.55rem 1.1rem;border-radius:100px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--grey-hi);
+  backdrop-filter:blur(8px);
+  transition:all 0.25s;cursor:default;
+}
+.plat-chip:hover{
+  background:rgba(18,70,255,0.12);
+  border-color:rgba(18,70,255,0.4);
+  color:var(--ice);
+  box-shadow:0 0 16px rgba(18,70,255,0.2);
+}
+.plat-chip.highlight{
+  background:rgba(18,70,255,0.1);
+  border-color:rgba(18,70,255,0.3);
+  color:var(--ice);
+}
+.plat-count{
+  font-family:var(--ff-disp);font-size:clamp(3.5rem,6vw,5.5rem);
+  font-weight:800;letter-spacing:-0.02em;
+  background:linear-gradient(135deg,var(--blue-hi),var(--ice));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;margin:3rem 0 0.5rem;text-align:center;
+}
+.plat-count-label{
+  text-align:center;font-family:var(--ff-mono);font-size:0.72rem;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-hi);
+}
+
+/* ═══ ABOUT (EXCLUSIVE) ═══ */
+.exclusive-section{}
+.exclusive-inner{
+  max-width:860px;margin:0 auto;text-align:center;
+}
+.exclusive-glass{
+  padding:4rem;margin-top:3rem;
+  background:rgba(18,70,255,0.06);
+  border:1px solid rgba(18,70,255,0.2);
+  border-radius:24px;
+  backdrop-filter:blur(30px);
+  position:relative;overflow:hidden;
+}
+.exclusive-glass::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(18,70,255,0.6),transparent);
+}
+.exclusive-glass::after{
+  content:'';position:absolute;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(18,70,255,0.08),transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.excl-items{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2rem;margin-top:3rem;position:relative;z-index:1;
+}
+.excl-item{}
+.excl-num{
+  font-family:var(--ff-disp);font-weight:800;
+  font-size:2.8rem;line-height:1;
+  background:linear-gradient(135deg,var(--blue-hi),var(--ice));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:0.4rem;
+}
+.excl-label{font-size:0.78rem;color:var(--grey-hi);font-family:var(--ff-mono);letter-spacing:0.1em;text-transform:uppercase}
+
+/* ═══ SERVICES BIG ═══ */
+.big-services{background:rgba(4,8,18,0.5)}
+.big-svc-list{display:flex;flex-direction:column;gap:0}
+.big-svc{
+  display:grid;grid-template-columns:260px 1fr auto;
+  align-items:center;gap:3rem;
+  padding:2.5rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  transition:background 0.25s;position:relative;
+}
+.big-svc::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:0;
+  background:rgba(18,70,255,0.06);transition:width 0.4s ease;
+  border-radius:0 12px 12px 0;
+}
+.big-svc:hover::before{width:100%}
+.big-svc:first-child{border-top:1px solid rgba(255,255,255,0.05)}
+.big-svc-title{
+  font-family:var(--ff-disp);font-weight:800;font-size:1.6rem;
+  letter-spacing:0.01em;color:var(--white);
+  display:flex;align-items:center;gap:1rem;position:relative;z-index:1;
+}
+.big-svc-title .svc-num{
+  font-family:var(--ff-mono);font-size:0.65rem;color:var(--blue-hi);
+  letter-spacing:0.15em;font-weight:400;
+}
+.big-svc-body{font-size:0.87rem;color:var(--grey-hi);line-height:1.7;position:relative;z-index:1}
+.big-svc-tag{
+  font-family:var(--ff-mono);font-size:0.65rem;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--blue-hi);
+  border:1px solid rgba(18,70,255,0.3);
+  padding:0.35rem 0.9rem;border-radius:100px;
+  white-space:nowrap;position:relative;z-index:1;
+  backdrop-filter:blur(8px);
+  background:rgba(18,70,255,0.06);
+}
+
+/* ═══ CONTACT ═══ */
+.contact-section{background:var(--deep)}
+.contact-inner{
+  max-width:680px;margin:0 auto;text-align:center;
+}
+.contact-glass{
+  margin-top:3rem;padding:3rem;
+  background:rgba(8,14,28,0.6);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:24px;
+  backdrop-filter:blur(40px) saturate(160%);
+  box-shadow:0 32px 80px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.08);
+  position:relative;overflow:hidden;
+}
+.contact-glass::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+}
+.contact-email-block{
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  background:rgba(18,70,255,0.08);
+  border:1px solid rgba(18,70,255,0.25);
+  border-radius:14px;padding:1.5rem 2rem;
+  margin:2rem 0;
+  backdrop-filter:blur(12px);
+  transition:border-color 0.3s,background 0.3s;
+}
+.contact-email-block:hover{
+  background:rgba(18,70,255,0.14);
+  border-color:rgba(18,70,255,0.45);
+}
+.email-icon{font-size:1.4rem;flex-shrink:0}
+.email-text{}
+.email-label{font-family:var(--ff-mono);font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-hi);margin-bottom:0.25rem}
+.email-address{
+  font-family:var(--ff-disp);font-weight:700;font-size:1.15rem;
+  letter-spacing:0.03em;color:var(--white);
+}
+.contact-cta{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  background:linear-gradient(135deg,var(--blue),var(--blue-hi));
+  color:var(--white);text-decoration:none;
+  padding:1rem 2.5rem;border-radius:100px;
+  font-weight:600;font-size:0.9rem;letter-spacing:0.04em;
+  box-shadow:0 0 32px rgba(18,70,255,0.45);
+  transition:box-shadow 0.3s,transform 0.2s;
+  position:relative;overflow:hidden;
+}
+.contact-cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+}
+.contact-cta:hover{box-shadow:0 0 50px rgba(18,70,255,0.65);transform:translateY(-2px)}
+.contact-note{
+  font-size:0.78rem;color:var(--grey);margin-top:1.5rem;
+  font-family:var(--ff-mono);letter-spacing:0.06em;
+}
+
+/* ═══ FOOTER ═══ */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding:3rem 5vw 2rem;
+  background:var(--void);
+}
+.footer-top{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:2rem;margin-bottom:2.5rem;
+}
+.footer-logo{
+  font-family:var(--ff-disp);font-weight:800;font-size:1.5rem;
+  letter-spacing:0.06em;color:var(--white);
+}
+.footer-logo em{color:var(--blue-hi);font-style:normal}
+.footer-tagline{font-size:0.78rem;color:var(--grey);margin-top:0.3rem;font-family:var(--ff-mono);letter-spacing:0.06em}
+.footer-links{display:flex;gap:2.5rem;flex-wrap:wrap}
+.footer-links a{
+  text-decoration:none;font-size:0.82rem;color:var(--grey-hi);
+  transition:color 0.2s;letter-spacing:0.04em;
+}
+.footer-links a:hover{color:var(--white)}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,0.04);
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{font-family:var(--ff-mono);font-size:0.68rem;color:var(--grey);letter-spacing:0.08em}
+.footer-socials{display:flex;gap:0.75rem}
+.footer-socials a{
+  width:34px;height:34px;border-radius:10px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--ff-mono);font-size:0.65rem;color:var(--grey-hi);
+  text-decoration:none;
+  backdrop-filter:blur(8px);
+  transition:all 0.25s;
+}
+.footer-socials a:hover{background:rgba(18,70,255,0.15);border-color:rgba(18,70,255,0.4);color:var(--white)}
+
+/* ═══ LIQUID GLASS ORBS ═══ */
+.orb{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  filter:blur(80px);animation:orb-drift 20s ease-in-out infinite alternate;
+}
+.orb-1{
+  width:600px;height:600px;top:-200px;right:-100px;
+  background:radial-gradient(circle,rgba(18,70,255,0.15),transparent 70%);
+  animation-duration:25s;
+}
+.orb-2{
+  width:500px;height:500px;bottom:-150px;left:-100px;
+  background:radial-gradient(circle,rgba(58,107,255,0.1),transparent 70%);
+  animation-duration:30s;animation-delay:-10s;
+}
+.orb-3{
+  width:300px;height:300px;top:40%;right:20%;
+  background:radial-gradient(circle,rgba(18,70,255,0.08),transparent 70%);
+  animation-duration:18s;animation-delay:-5s;
+}
+@keyframes orb-drift{
+  0%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(40px,-30px) scale(1.05)}
+  66%{transform:translate(-20px,40px) scale(0.97)}
+  100%{transform:translate(30px,20px) scale(1.02)}
+}
+
+/* ═══ REVEALS ═══ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal.up{opacity:1;transform:none}
+.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}.d4{transition-delay:0.4s}
+
+/* ═══ TOOLS SECTION ═══ */
+.tools-header{text-align:center;max-width:640px;margin:0 auto 3.5rem}
+.tools-header .section-eyebrow{justify-content:center}
+.tools-header .section-eyebrow::before{display:none}
+.tools-header .section-body{margin:0 auto}
+
+.tools-tabs{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:0.6rem;
+  margin-bottom:2.5rem;
+}
+.tool-tab{
+  font-family:var(--ff-mono);font-size:0.72rem;letter-spacing:0.08em;
+  text-transform:uppercase;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  color:var(--grey-hi);
+  padding:0.7rem 1.3rem;border-radius:100px;
+  cursor:pointer;transition:all 0.25s;
+  backdrop-filter:blur(8px);
+}
+.tool-tab:hover{border-color:rgba(18,70,255,0.35);color:var(--white)}
+.tool-tab.active{
+  background:linear-gradient(135deg,var(--blue),var(--blue-hi));
+  border-color:transparent;color:var(--white);
+  box-shadow:0 0 24px rgba(18,70,255,0.4);
+}
+
+.tool-panel{
+  display:none;max-width:680px;margin:0 auto;
+  padding:2.5rem;
+}
+.tool-panel.active{display:block}
+.tool-panel-head{display:flex;align-items:center;gap:1.2rem;margin-bottom:2rem}
+.tool-icon{font-size:2rem;filter:drop-shadow(0 0 10px rgba(18,70,255,0.4))}
+.tool-title{font-family:var(--ff-disp);font-weight:700;font-size:1.3rem;color:var(--white)}
+.tool-sub{font-size:0.82rem;color:var(--grey-hi);margin-top:0.2rem}
+
+.tool-input-group{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.2rem}
+.tool-input-group label{
+  font-family:var(--ff-mono);font-size:0.7rem;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--grey-hi);
+}
+.tool-input-group input,.tool-input-group select{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;padding:0.85rem 1rem;
+  color:var(--white);font-family:var(--ff-body);font-size:0.92rem;
+  outline:none;transition:border-color 0.2s;
+  appearance:none;width:100%;
+}
+.tool-input-group input:focus,.tool-input-group select:focus{border-color:var(--blue-hi)}
+.tool-input-group select option{background:var(--ink)}
+.tool-input-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+.tool-action{
+  width:100%;
+  background:linear-gradient(135deg,var(--blue),var(--blue-hi));
+  color:var(--white);border:none;
+  padding:0.9rem;border-radius:8px;
+  font-weight:600;font-size:0.9rem;letter-spacing:0.03em;
+  cursor:pointer;transition:box-shadow 0.25s,transform 0.2s;
+  font-family:var(--ff-body);
+  box-shadow:0 0 24px rgba(18,70,255,0.3);
+  margin-top:0.5rem;
+}
+.tool-action:hover{box-shadow:0 0 36px rgba(18,70,255,0.5);transform:translateY(-1px)}
+
+.tool-result{
+  margin-top:1.5rem;padding:1.5rem;border-radius:10px;
+  background:rgba(18,70,255,0.07);
+  border:1px solid rgba(18,70,255,0.2);
+  min-height:0;display:none;
+}
+.tool-result.show{display:block}
+.tool-result-num{
+  font-family:var(--ff-disp);font-weight:800;font-size:2.2rem;
+  color:var(--white);line-height:1;
+}
+.tool-result-label{font-size:0.78rem;color:var(--grey-hi);margin-top:0.4rem;font-family:var(--ff-mono);letter-spacing:0.05em}
+.tool-result-code{
+  font-family:var(--ff-mono);font-size:1.4rem;letter-spacing:0.1em;
+  color:var(--ice);word-break:break-all;
+}
+
+.tool-disclaimer{
+  font-size:0.72rem;color:var(--grey);margin-top:1.2rem;
+  line-height:1.6;font-style:italic;
+}
+
+/* checklist */
+.checklist{display:flex;flex-direction:column;gap:0.9rem;margin-bottom:1.8rem}
+.check-item{
+  display:flex;align-items:center;gap:0.8rem;
+  font-size:0.87rem;color:var(--grey-hi);cursor:pointer;
+  line-height:1.5;
+}
+.check-item input{
+  width:18px;height:18px;flex-shrink:0;
+  accent-color:var(--blue-hi);cursor:pointer;
+}
+.readiness-bar-wrap{margin-top:0.5rem}
+.readiness-bar{
+  width:100%;height:10px;border-radius:100px;
+  background:rgba(255,255,255,0.06);overflow:hidden;
+}
+.readiness-fill{
+  height:100%;width:0%;border-radius:100px;
+  background:linear-gradient(90deg,var(--blue),var(--blue-hi),var(--ice));
+  transition:width 0.4s ease;
+}
+.readiness-label{
+  text-align:center;margin-top:0.8rem;
+  font-family:var(--ff-mono);font-size:0.78rem;
+  letter-spacing:0.08em;color:var(--ice);
+}
+
+/* market comparator */
+.market-result{margin-top:1rem}
+.market-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.9rem 0;border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.market-row:last-child{border-bottom:none}
+.market-flag{font-size:1.3rem;width:32px;text-align:center}
+.market-name{flex:1;font-size:0.88rem;color:var(--white);font-weight:500}
+.market-bar-wrap{width:120px;height:6px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden}
+.market-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-hi));border-radius:100px}
+.market-pct{font-family:var(--ff-mono);font-size:0.75rem;color:var(--ice);width:40px;text-align:right}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  .services-layout{grid-template-columns:1fr}
+  .big-svc{grid-template-columns:1fr;gap:0.75rem}
+  .big-svc-tag{width:fit-content}
+  .excl-items{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  nav{top:10px;padding:0 1rem;height:52px}
+  .nav-logo{font-size:0.82rem;letter-spacing:0.02em}
+  .nav-links{display:none}
+  .nav-links.open{
+    display:flex;flex-direction:column;
+    position:fixed;top:72px;left:1rem;right:1rem;
+    background:rgba(6,11,20,0.97);
+    backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;padding:2rem;gap:1.5rem;z-index:999;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  }
+  .nav-links.open a{font-size:1.1rem}
+  .nav-hamburger{display:flex}
+  .hero{padding:90px 6vw 60px}
+  .hero-content{max-width:100%}
+  .hero-headline{font-size:clamp(2.4rem,11vw,4rem);letter-spacing:-0.01em}
+  .hero-sub{font-size:0.95rem}
+  .hero-cta{padding:0.85rem 1.8rem;font-size:0.88rem}
+  .section{padding:70px 6vw}
+  .section-title{font-size:clamp(1.8rem,7vw,3rem)}
+  .services-grid{grid-template-columns:1fr}
+  .svc-card.wide{grid-column:span 1}
+  .excl-items{grid-template-columns:1fr}
+  .exclusive-glass{padding:1.75rem}
+  .contact-glass{padding:1.75rem}
+  .contact-email-block{flex-direction:column;text-align:center;gap:0.5rem}
+  .email-address{font-size:0.95rem;word-break:break-all}
+  .contact-cta{padding:0.9rem 1.5rem;font-size:0.85rem;width:100%;justify-content:center}
+  .footer-top{flex-direction:column;align-items:flex-start;gap:1.5rem}
+  .footer-links{gap:1.5rem}
+  .footer-logo{font-size:1.1rem}
+  .big-svc{grid-template-columns:1fr;gap:0.6rem;padding:1.75rem 0}
+  .big-svc-title{font-size:1.3rem}
+  .plat-grid{gap:0.5rem}
+  .plat-chip{font-size:0.68rem;padding:0.45rem 0.9rem}
+  .plat-count{font-size:clamp(2.5rem,11vw,5rem)}
+  .hero-scroll{display:none}
+  .tool-panel{padding:1.5rem}
+  .tool-input-row{grid-template-columns:1fr 1fr}
+  .tools-tabs{gap:0.4rem}
+  .tool-tab{font-size:0.62rem;padding:0.55rem 0.9rem}
+  .tool-panel-head{gap:0.8rem}
+  .tool-title{font-size:1.1rem}
+}
+@media(max-width:380px){
+  .nav-logo{font-size:0.72rem}
+  .hero-headline{font-size:clamp(2rem,10.5vw,3.2rem)}
+  .hero-badge{font-size:0.6rem;padding:0.4rem 0.9rem}
+  .section-title{font-size:clamp(1.6rem,7vw,2.4rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT ORBS -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="nav-logo">PLÁCATA MUSIC<em> LLC</em></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#herramientas">Herramientas</a></li>
+    <li><a href="#plataformas">Plataformas</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#contacto" class="nav-pill">Contacto</a></li>
+  </ul>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Empresa privada de música · Acceso por invitación</div>
+    <h1 class="hero-headline">
+      <span class="line1">DONDE LA</span>
+      <span class="line2">MÚSICA</span>
+      <span class="line3">TRASCIENDE</span>
+    </h1>
+    <p class="hero-sub">
+      Plácata Music LLC es una compañía <strong>privada y selectiva</strong> de distribución, publishing y desarrollo artístico. No somos para todos — somos para los que van en serio.
+    </p>
+    <a href="mailto:placatamusicllc@gmail.com?subject=Solicitud%20de%20acceso%20-%20Pl%C3%A1cata%20Music%20LLC&body=Hola%2C%20mi%20nombre%20es%20...%20y%20me%20gustar%C3%ADa%20solicitar%20acceso%20a%20sus%20servicios.%0A%0ANombre%20art%C3%ADstico%3A%20%0AG%C3%A9nero%20musical%3A%20%0ADescripci%C3%B3n%20del%20proyecto%3A%20" class="hero-cta">
+      Solicitar acceso
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item"><b>Distribución Global</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Publishing & Copyright</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Marketing Digital</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Artist Management</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Producción Musical</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>200+ Plataformas</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Acceso Privado</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Royalties 100%</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Distribución Global</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Publishing & Copyright</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Marketing Digital</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Artist Management</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Producción Musical</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>200+ Plataformas</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Acceso Privado</b> <span class="ticker-dot">✦</span></div>
+    <div class="ticker-item"><b>Royalties 100%</b> <span class="ticker-dot">✦</span></div>
+  </div>
+</div>
+
+<!-- ═══ SERVICES OVERVIEW ═══ -->
+<section class="section" id="servicios">
+  <div class="services-layout">
+    <div>
+      <div class="section-eyebrow reveal">Lo que hacemos</div>
+      <h2 class="section-title reveal d1">Un ecosistema completo para artistas reales</h2>
+      <p class="section-body reveal d2">Desde el primer beat hasta el último dólar de royalties — gestionamos cada parte de tu carrera con precisión, discreción y resultados.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card glass reveal">
+        <span class="svc-icon">🌐</span>
+        <div class="svc-name">Distribución Global</div>
+        <p class="svc-desc">Tu música en más de 200 plataformas digitales en todo el mundo. Monitoreo en tiempo real, entregas rápidas y cobertura total.</p>
+      </div>
+      <div class="svc-card glass reveal d1">
+        <span class="svc-icon">©️</span>
+        <div class="svc-name">Publishing & Derechos</div>
+        <p class="svc-desc">Registro, protección y administración de tus composiciones. Cobro de royalties mecánicos, sincronización y de interpretación globalmente.</p>
+      </div>
+      <div class="svc-card glass reveal d2">
+        <span class="svc-icon">📡</span>
+        <div class="svc-name">Marketing Digital</div>
+        <p class="svc-desc">Estrategias personalizadas en Meta, TikTok y YouTube. Pitching editorial a playlists clave y campañas de impacto real.</p>
+      </div>
+      <div class="svc-card glass reveal d3">
+        <span class="svc-icon">🎤</span>
+        <div class="svc-name">Manejo de Artistas</div>
+        <p class="svc-desc">Desarrollo de carrera 360°: booking, branding, negociación de contratos y estrategia de lanzamientos.</p>
+      </div>
+      <div class="svc-card glass wide reveal d1">
+        <span class="svc-icon">🎛️</span>
+        <div class="svc-name">Producción Musical</div>
+        <p class="svc-desc">Acceso a nuestra red de productores, estudios y servicio de mezcla y masterización de nivel profesional. A&R integrado para artistas seleccionados dentro de nuestro roster.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BIG SERVICES DETAIL ═══ -->
+<section class="section big-services">
+  <div class="section-eyebrow reveal">En profundidad</div>
+  <h2 class="section-title reveal d1">Nuestros servicios</h2>
+  <div class="big-svc-list" style="margin-top:3rem">
+    <div class="big-svc reveal">
+      <div class="big-svc-title">
+        <span class="svc-num">—</span>
+        Distribución
+      </div>
+      <div class="big-svc-body">Llevamos tu música a Spotify, Apple Music, Tidal, YouTube Music, Amazon Music, Deezer, Boomplay, Anghami y más de 200 tiendas y plataformas de streaming en todo el mundo. Obtienes el 100% de tus regalías, analítica detallada y entregas prioritarias.</div>
+      <div class="big-svc-tag">200+ DSPs</div>
+    </div>
+    <div class="big-svc reveal d1">
+      <div class="big-svc-title">
+        <span class="svc-num">—</span>
+        Publishing
+      </div>
+      <div class="big-svc-body">Registramos y administramos tus obras ante las sociedades de gestión de derechos más importantes. Gestionamos royalties de sincronización para cine, TV y publicidad, royalties mecánicos y de interpretación pública a nivel internacional.</div>
+      <div class="big-svc-tag">PRO · MLC · ASCAP</div>
+    </div>
+    <div class="big-svc reveal d2">
+      <div class="big-svc-title">
+        <span class="svc-num">—</span>
+        Marketing
+      </div>
+      <div class="big-svc-body">Diseñamos y ejecutamos campañas de lanzamiento adaptadas a tu género y audiencia. Pitching directo a curadores de playlists editoriales, estrategias de contenido y publicidad digital con resultados medibles y transparentes.</div>
+      <div class="big-svc-tag">Meta · TikTok · Editorial</div>
+    </div>
+    <div class="big-svc reveal">
+      <div class="big-svc-title">
+        <span class="svc-num">—</span>
+        Manejo Artístico
+      </div>
+      <div class="big-svc-body">Actuamos como tu equipo de gestión: negociamos contratos, construimos tu imagen de marca, coordinamos booking de presentaciones y trazamos la estrategia de carrera a corto, mediano y largo plazo con metas claras.</div>
+      <div class="big-svc-tag">Gestión 360°</div>
+    </div>
+    <div class="big-svc reveal d1">
+      <div class="big-svc-title">
+        <span class="svc-num">—</span>
+        Producción
+      </div>
+      <div class="big-svc-body">Conectamos artistas de nuestro roster con productores de alto nivel, sesiones de grabación en estudios seleccionados, servicios de mezcla y masterización profesional y desarrollo de A&R personalizado para dar forma a tu sonido único.</div>
+      <div class="big-svc-tag">Estudio · A&R · Mixing</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PLATFORMS ═══ -->
+<section class="section platforms-section" id="plataformas">
+  <div class="platforms-header">
+    <div class="section-eyebrow reveal">Alcance global</div>
+    <h2 class="section-title reveal d1">Tu música, en todas partes</h2>
+  </div>
+  <div class="plat-grid reveal">
+    <div class="plat-chip highlight">Spotify</div>
+    <div class="plat-chip highlight">Apple Music</div>
+    <div class="plat-chip highlight">YouTube Music</div>
+    <div class="plat-chip highlight">Tidal</div>
+    <div class="plat-chip highlight">Amazon Music</div>
+    <div class="plat-chip">Deezer</div>
+    <div class="plat-chip">Boomplay</div>
+    <div class="plat-chip">Anghami</div>
+    <div class="plat-chip">Pandora</div>
+    <div class="plat-chip">iHeartRadio</div>
+    <div class="plat-chip">TikTok</div>
+    <div class="plat-chip">Instagram/Facebook</div>
+    <div class="plat-chip">Triller</div>
+    <div class="plat-chip">Beatport</div>
+    <div class="plat-chip">Bandcamp</div>
+    <div class="plat-chip">SoundCloud</div>
+    <div class="plat-chip">Napster</div>
+    <div class="plat-chip">7Digital</div>
+    <div class="plat-chip">Melon</div>
+    <div class="plat-chip">Resso</div>
+    <div class="plat-chip">NetEase Cloud</div>
+    <div class="plat-chip">QQ Music</div>
+    <div class="plat-chip">Joox</div>
+    <div class="plat-chip">Kuack Media</div>
+    <div class="plat-chip">Claro Música</div>
+    <div class="plat-chip">+175 más</div>
+  </div>
+  <div class="plat-count reveal">200<span style="color:var(--blue-hi)">+</span></div>
+  <div class="plat-count-label reveal d1">Plataformas de distribución activas</div>
+</section>
+
+<!-- ═══ TOOLS ═══ -->
+<section class="section tools-section" id="herramientas">
+  <div class="tools-header">
+    <div class="section-eyebrow reveal">Recursos gratuitos</div>
+    <h2 class="section-title reveal d1">Herramientas para artistas y sellos</h2>
+    <p class="section-body reveal d2">Pensadas para artistas independientes y sellos que quieren tomar mejores decisiones antes de lanzar. Úsalas gratis, sin necesidad de cuenta.</p>
+  </div>
+
+  <div class="tools-tabs reveal d3">
+    <button class="tool-tab active" data-tool="royalty" onclick="switchTool('royalty')">Calculadora de Regalías</button>
+    <button class="tool-tab" data-tool="isrc" onclick="switchTool('isrc')">Generador de ISRC</button>
+    <button class="tool-tab" data-tool="readiness" onclick="switchTool('readiness')">Release Readiness</button>
+    <button class="tool-tab" data-tool="market" onclick="switchTool('market')">Comparador de Mercado</button>
+  </div>
+
+  <!-- TOOL 1: ROYALTY CALCULATOR -->
+  <div class="tool-panel glass active" id="tool-royalty">
+    <div class="tool-panel-head">
+      <span class="tool-icon">💰</span>
+      <div>
+        <div class="tool-title">Calculadora de Regalías</div>
+        <div class="tool-sub">Estima cuánto podrías ganar según tus streams mensuales</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-input-group">
+        <label>Streams estimados por mes</label>
+        <input type="number" id="royaltyStreams" placeholder="Ej: 50000" value="50000"/>
+      </div>
+      <div class="tool-input-group">
+        <label>Plataforma principal</label>
+        <select id="royaltyPlatform">
+          <option value="0.004">Spotify (~$0.004 por stream)</option>
+          <option value="0.01">Apple Music (~$0.01 por stream)</option>
+          <option value="0.013">Tidal (~$0.013 por stream)</option>
+          <option value="0.008">Amazon Music (~$0.008 por stream)</option>
+          <option value="0.006">Deezer (~$0.006 por stream)</option>
+        </select>
+      </div>
+      <button class="tool-action" onclick="calcRoyalty()">Calcular estimado</button>
+      <div class="tool-result" id="royaltyResult"></div>
+      <p class="tool-disclaimer">*Estimación referencial basada en promedios públicos de la industria. Las tarifas reales varían según país, tipo de cuenta del oyente y acuerdos de cada plataforma.</p>
+    </div>
+  </div>
+
+  <!-- TOOL 2: ISRC GENERATOR -->
+  <div class="tool-panel glass" id="tool-isrc">
+    <div class="tool-panel-head">
+      <span class="tool-icon">🏷️</span>
+      <div>
+        <div class="tool-title">Generador de Código ISRC</div>
+        <div class="tool-sub">Crea el formato correcto de tu código ISRC para registrar tu pista</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-input-row">
+        <div class="tool-input-group">
+          <label>País (2 letras)</label>
+          <input type="text" id="isrcCountry" maxlength="2" placeholder="US" value="US"/>
+        </div>
+        <div class="tool-input-group">
+          <label>Código de registrante (3 caracteres)</label>
+          <input type="text" id="isrcRegistrant" maxlength="3" placeholder="PLC"/>
+        </div>
+      </div>
+      <div class="tool-input-row">
+        <div class="tool-input-group">
+          <label>Año (2 dígitos)</label>
+          <input type="text" id="isrcYear" maxlength="2" placeholder="26" value="26"/>
+        </div>
+        <div class="tool-input-group">
+          <label>Número de pista (5 dígitos)</label>
+          <input type="text" id="isrcTrack" maxlength="5" placeholder="00001"/>
+        </div>
+      </div>
+      <button class="tool-action" onclick="genISRC()">Generar código</button>
+      <div class="tool-result" id="isrcResult"></div>
+      <p class="tool-disclaimer">*Este código sigue el formato oficial ISRC pero no queda registrado oficialmente. Para registro oficial y administración completa, contáctanos.</p>
+    </div>
+  </div>
+
+  <!-- TOOL 3: RELEASE READINESS -->
+  <div class="tool-panel glass" id="tool-readiness">
+    <div class="tool-panel-head">
+      <span class="tool-icon">✅</span>
+      <div>
+        <div class="tool-title">Release Readiness Check</div>
+        <div class="tool-sub">Verifica si tu lanzamiento está listo antes de distribuir</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <div class="checklist" id="checklist">
+        <label class="check-item"><input type="checkbox" onchange="updateReadiness()"/> Tengo el archivo de audio en WAV o FLAC de alta calidad</label>
+        <label class="check-item"><input type="checkbox" onchange="updateReadiness()"/> El track está mezclado y masterizado</label>
+        <label class="check-item"><input type="checkbox" onchange="updateReadiness()"/> Tengo el artwork en formato cuadrado, mínimo 3000x3000px</label>
+        <label class="check-item"><input type="checkbox" onchange="updateReadiness()"/> Tengo el título exacto de la canción y créditos de todos los colaboradores</label>
+        <label class="check-item"><input type="checkbox" onchange="updateReadiness()"/> Sé la fecha de lanzamiento que quiero</label>
+        <label class="check-item"><input type="checkbox" onchange="updateReadiness()"/> Tengo el ISRC o sé que necesito que te lo generemos</label>
+        <label class="check-item"><input type="checkbox" onchange="updateReadiness()"/> Tengo claro quién es el autor/compositor para publishing</label>
+        <label class="check-item"><input type="checkbox" onchange="updateReadiness()"/> Tengo una estrategia básica de redes para el lanzamiento</label>
+      </div>
+      <div class="readiness-bar-wrap">
+        <div class="readiness-bar"><div class="readiness-fill" id="readinessFill"></div></div>
+        <div class="readiness-label" id="readinessLabel">0% listo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL 4: MARKET COMPARATOR -->
+  <div class="tool-panel glass" id="tool-market">
+    <div class="tool-panel-head">
+      <span class="tool-icon">🌍</span>
+      <div>
+        <div class="tool-title">Comparador de Mercado</div>
+        <div class="tool-sub">Descubre en qué regiones tu género tiene más tracción</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-input-group">
+        <label>Selecciona tu género</label>
+        <select id="marketGenre" onchange="showMarket()">
+          <option value="urbano">Urbano / Reggaetón</option>
+          <option value="reparto">Reparto / Cubano</option>
+          <option value="afrobeats">Afrobeats</option>
+          <option value="electronica">Electrónica</option>
+          <option value="pop">Pop Latino</option>
+          <option value="trap">Trap Latino</option>
+        </select>
+      </div>
+      <div class="market-result" id="marketResult"></div>
+      <p class="tool-disclaimer">*Datos referenciales de tendencias generales del mercado. Para un análisis específico de tu música, contáctanos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXCLUSIVE ═══ -->
+<section class="section exclusive-section" id="nosotros">
+  <div class="exclusive-inner">
+    <div class="section-eyebrow reveal" style="justify-content:center"><span style="width:0;display:none"></span>Quiénes somos</div>
+    <h2 class="section-title reveal d1">No somos una distribuidora masiva. Somos tu socio estratégico.</h2>
+    <p class="section-body reveal d2" style="margin:0 auto;text-align:center">Plácata Music LLC opera como empresa privada. Seleccionamos cuidadosamente a los artistas y proyectos con los que trabajamos porque creemos que la atención personalizada es lo que marca la diferencia entre existir en el mercado y dominarlo.</p>
+    <div class="exclusive-glass reveal d3">
+      <div class="excl-items">
+        <div class="excl-item">
+          <div class="excl-num">200+</div>
+          <div class="excl-label">Plataformas</div>
+        </div>
+        <div class="excl-item">
+          <div class="excl-num">100%</div>
+          <div class="excl-label">Tus regalías</div>
+        </div>
+        <div class="excl-item">
+          <div class="excl-num">Privado</div>
+          <div class="excl-label">Acceso selectivo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="section contact-section" id="contacto">
+  <div class="contact-inner">
+    <div class="section-eyebrow reveal" style="justify-content:center">Contacto</div>
+    <h2 class="section-title reveal d1">¿Listo para el próximo nivel?</h2>
+    <p class="section-body reveal d2" style="margin:0 auto;text-align:center">
+      Si crees que tu proyecto está listo para trabajar con nosotros, escríbenos. Cuéntanos quién eres, qué haces y qué buscas — evaluamos cada propuesta de forma personal.
+    </p>
+    <div class="contact-glass reveal d3">
+      <p style="font-size:0.85rem;color:var(--grey-hi);line-height:1.7;margin-bottom:1.5rem">
+        Enviamos una respuesta en un máximo de <strong style="color:var(--white)">48 horas hábiles</strong>. Incluye tu nombre artístico, género musical y una breve descripción de tu proyecto.
+      </p>
+      <a href="mailto:placatamusicllc@gmail.com?subject=Solicitud%20de%20contacto%20-%20Pl%C3%A1cata%20Music%20LLC&body=Hola%2C%20mi%20nombre%20es%20...%20y%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20sus%20servicios.%0A%0ANombre%20art%C3%ADstico%3A%20%0AG%C3%A9nero%20musical%3A%20%0ADescripci%C3%B3n%20del%20proyecto%3A%20" class="contact-email-block" style="text-decoration:none">
+        <div class="email-text">
+          <div class="email-label">Correo de contacto</div>
+          <div class="email-address">placatamusicllc@gmail.com</div>
+        </div>
+      </a>
+      <a href="mailto:placatamusicllc@gmail.com?subject=Solicitud%20de%20contacto%20-%20Pl%C3%A1cata%20Music&body=Hola%2C%20me%20llamo%20...%20y%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20sus%20servicios." class="contact-cta">
+        Escribirnos ahora
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <p class="contact-note">Acceso privado · Solo artistas seleccionados</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">PLÁCATA MUSIC<em> LLC</em></div>
+      <div class="footer-tagline">Private Music Company · LLC</div>
+    </div>
+    <div class="footer-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#plataformas">Plataformas</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="mailto:placatamusicllc@gmail.com">Contacto</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Plácata Music LLC. Todos los derechos reservados.</div>
+    <div class="footer-socials">
+      <a href="#" title="Instagram">IG</a>
+      <a href="#" title="TikTok">TK</a>
+      <a href="#" title="YouTube">YT</a>
+      <a href="#" title="Spotify">SP</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── MOBILE MENU ──
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
+
+// ── SCROLL REVEAL ──
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('up')})
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ── PARTICLE CANVAS ──
+(function(){
+  const canvas=document.getElementById('bg-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  const COUNT=55;
+
+  function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight}
+  resize();window.addEventListener('resize',resize);
+
+  function rand(a,b){return a+Math.random()*(b-a)}
+
+  function init(){
+    pts=[];
+    for(let i=0;i<COUNT;i++){
+      pts.push({
+        x:rand(0,W),y:rand(0,H),
+        vx:rand(-0.18,0.18),vy:rand(-0.18,0.18),
+        r:rand(1,2.2),
+        a:rand(0.15,0.45)
+      });
+    }
+  }
+  init();
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // connections
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(18,70,255,${0.08*(1-d/140)})`;
+          ctx.lineWidth=0.5;
+          ctx.moveTo(pts[i].x,pts[i].y);
+          ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    // dots
+    pts.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(90,140,255,${p.a})`;
+      ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── MOUSE PARALLAX ON ORBS ──
+document.addEventListener('mousemove',e=>{
+  const mx=(e.clientX/innerWidth-0.5)*20;
+  const my=(e.clientY/innerHeight-0.5)*20;
+  document.querySelector('.orb-1').style.transform=`translate(${mx*0.8}px,${my*0.8}px)`;
+  document.querySelector('.orb-3').style.transform=`translate(${-mx*0.5}px,${-my*0.5}px)`;
+});
+
+// ══════════ TOOLS LOGIC ══════════
+
+// Tab switching
+function switchTool(name){
+  document.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector(`.tool-tab[data-tool="${name}"]`).classList.add('active');
+  document.getElementById('tool-'+name).classList.add('active');
+}
+
+// TOOL 1: Royalty Calculator
+function calcRoyalty(){
+  const streams = parseFloat(document.getElementById('royaltyStreams').value) || 0;
+  const rate = parseFloat(document.getElementById('royaltyPlatform').value);
+  const monthly = streams * rate;
+  const yearly = monthly * 12;
+  const result = document.getElementById('royaltyResult');
+  result.innerHTML = `
+    <div class="tool-result-num">$${monthly.toLocaleString('en-US',{maximumFractionDigits:2})}</div>
+    <div class="tool-result-label">Estimado mensual (USD)</div>
+    <div style="margin-top:1rem;font-family:var(--ff-mono);font-size:0.8rem;color:var(--grey-hi)">
+      Estimado anual: <strong style="color:var(--white)">$${yearly.toLocaleString('en-US',{maximumFractionDigits:2})}</strong>
+    </div>
+  `;
+  result.classList.add('show');
+}
+
+// TOOL 2: ISRC Generator
+function genISRC(){
+  let country = (document.getElementById('isrcCountry').value || 'US').toUpperCase().slice(0,2);
+  let registrant = (document.getElementById('isrcRegistrant').value || 'PLC').toUpperCase().slice(0,3);
+  let year = (document.getElementById('isrcYear').value || '26').slice(0,2);
+  let track = (document.getElementById('isrcTrack').value || '00001').padStart(5,'0').slice(0,5);
+
+  // pad if needed
+  country = country.padEnd(2,'X');
+  registrant = registrant.padEnd(3,'X');
+  year = year.padStart(2,'0');
+
+  const isrc = `${country}-${registrant}-${year}-${track}`;
+  const result = document.getElementById('isrcResult');
+  result.innerHTML = `
+    <div class="tool-result-code">${isrc}</div>
+    <div class="tool-result-label" style="margin-top:0.8rem">Formato ISRC válido generado</div>
+  `;
+  result.classList.add('show');
+}
+
+// TOOL 3: Release Readiness
+function updateReadiness(){
+  const checks = document.querySelectorAll('#checklist input[type="checkbox"]');
+  const total = checks.length;
+  const checked = Array.from(checks).filter(c=>c.checked).length;
+  const pct = Math.round((checked/total)*100);
+  document.getElementById('readinessFill').style.width = pct+'%';
+
+  let msg = pct+'% listo';
+  if(pct === 100) msg += ' — ¡Tu lanzamiento está listo! 🚀';
+  else if(pct >= 70) msg += ' — Casi listo, revisa los últimos detalles';
+  else if(pct >= 40) msg += ' — Vas por buen camino';
+  else msg += ' — Aún quedan pasos importantes';
+
+  document.getElementById('readinessLabel').textContent = msg;
+}
+
+// TOOL 4: Market Comparator
+const marketData = {
+  urbano: [
+    {flag:'🇵🇷',name:'Puerto Rico',pct:95},
+    {flag:'🇨🇴',name:'Colombia',pct:90},
+    {flag:'🇲🇽',name:'México',pct:85},
+    {flag:'🇺🇸',name:'Estados Unidos (Hispano)',pct:80},
+    {flag:'🇪🇸',name:'España',pct:72}
+  ],
+  reparto: [
+    {flag:'🇨🇺',name:'Cuba',pct:96},
+    {flag:'🇺🇸',name:'Miami / Florida',pct:88},
+    {flag:'🇪🇸',name:'España',pct:65},
+    {flag:'🇲🇽',name:'México',pct:58},
+    {flag:'🇨🇴',name:'Colombia',pct:50}
+  ],
+  afrobeats: [
+    {flag:'🇳🇬',name:'Nigeria',pct:97},
+    {flag:'🇬🇭',name:'Ghana',pct:88},
+    {flag:'🇬🇧',name:'Reino Unido',pct:82},
+    {flag:'🇺🇸',name:'Estados Unidos',pct:75},
+    {flag:'🇫🇷',name:'Francia',pct:68}
+  ],
+  electronica: [
+    {flag:'🇩🇪',name:'Alemania',pct:93},
+    {flag:'🇳🇱',name:'Países Bajos',pct:87},
+    {flag:'🇺🇸',name:'Estados Unidos',pct:80},
+    {flag:'🇧🇷',name:'Brasil',pct:70},
+    {flag:'🇲🇽',name:'México',pct:62}
+  ],
+  pop: [
+    {flag:'🇲🇽',name:'México',pct:92},
+    {flag:'🇪🇸',name:'España',pct:85},
+    {flag:'🇦🇷',name:'Argentina',pct:80},
+    {flag:'🇺🇸',name:'Estados Unidos (Hispano)',pct:76},
+    {flag:'🇨🇴',name:'Colombia',pct:70}
+  ],
+  trap: [
+    {flag:'🇦🇷',name:'Argentina',pct:91},
+    {flag:'🇪🇸',name:'España',pct:86},
+    {flag:'🇵🇷',name:'Puerto Rico',pct:83},
+    {flag:'🇲🇽',name:'México',pct:75},
+    {flag:'🇨🇱',name:'Chile',pct:68}
+  ]
+};
+
+function showMarket(){
+  const genre = document.getElementById('marketGenre').value;
+  const data = marketData[genre];
+  const container = document.getElementById('marketResult');
+  container.innerHTML = data.map(d => `
+    <div class="market-row">
+      <div class="market-flag">${d.flag}</div>
+      <div class="market-name">${d.name}</div>
+      <div class="market-bar-wrap"><div class="market-bar" style="width:${d.pct}%"></div></div>
+      <div class="market-pct">${d.pct}%</div>
+    </div>
+  `).join('');
+}
+// Show default market on load
+document.addEventListener('DOMContentLoaded', showMarket);
+</script>
+</body>
+</html>
